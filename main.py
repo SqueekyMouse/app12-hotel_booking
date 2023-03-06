@@ -1,18 +1,26 @@
 import pandas
+# commit: impl Hotel class functions Sec41
 
-# commit: create classes n basic flow Sec41
+df=pandas.read_csv('hotels.csv',dtype={'id':str}) # load all values as str
 
-df=pandas.read_csv('hotels.csv')
 
 class Hotel:
-    def __init__(self) -> None:
+    def __init__(self,hotel_id) -> None:
+        self.hotel_id=hotel_id
         pass
         
     def book(self): # book what? a hotel not user!!!
-        pass
+        """Books a hotel by changing availability to no"""
+        df.loc[df['id']==self.hotel_id,'available']='no'
+        df.to_csv('hotels.csv',index=False) # no need to add another column index
 
     def available(self):
-        pass
+        """Checks if the hotel is available"""
+        availability=df.loc[df['id']==self.hotel_id,'available'].squeeze()
+        if availability=='yes':
+            return True 
+        else:
+            return False
 
 
 class ReservationTicket:
@@ -26,8 +34,9 @@ class ReservationTicket:
 
 
 print(df)
-id=input('Enter id of the hotel: ')
-hotel=Hotel(id)
+hotel_ID=input('Enter id of the hotel: ')
+hotel=Hotel(hotel_ID)
+
 if hotel.available():
     hotel.book()
     name=input('Enter your name: ')

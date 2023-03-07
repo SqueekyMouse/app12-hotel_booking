@@ -1,5 +1,5 @@
 import pandas
-# commit: inheritence of credit card class and functions Sec42
+# commit: add spa hotel shild class Sec42
 
 df=pandas.read_csv('hotels.csv',dtype={'id':str}) # load all values as str
 df_cards=pandas.read_csv('cards.csv',dtype=str).to_dict(orient='records') # load all as string
@@ -28,6 +28,12 @@ class Hotel:
 
 
 
+class SpaHotel(Hotel):
+    def book_spa_package(self):
+        pass
+
+
+
 class ReservationTicket:
     def __init__(self,cust_name,hotel_object) -> None:
         self.cust_name=cust_name
@@ -36,6 +42,22 @@ class ReservationTicket:
     def generate(self):
         content=f"""
         Thank you for your reservation!
+        Here are your booking data:
+        Name: {self.cust_name}
+        Hotel: {self.hotel.name}
+        """
+        return(content)
+
+
+
+class SpaTicket:
+    def __init__(self,cust_name,hotel_object) -> None:
+        self.cust_name=cust_name
+        self.hotel=hotel_object
+
+    def generate(self):
+        content=f"""
+        Thank you for your SPA reservation!
         Here are your booking data:
         Name: {self.cust_name}
         Hotel: {self.hotel.name}
@@ -55,6 +77,9 @@ class CreditCard:
             return(True)
         else: # not necessary as it will return None by default
             return(False)
+        
+    def hello(self):
+        print('This is CC obj')
 
 
 
@@ -66,12 +91,17 @@ class SecureCreditCard(CreditCard): # child of CreditCard class inherits from
             return(True)
         else:
             return(False)
+    
+    def hello(self): # overriding parent class method, so not modifying parent class!!!
+        # return super().hello()
+        print('This is SecureCC obj!!!')
 
 
 
 print(df)
 hotel_ID=input('Enter id of the hotel: ')
-hotel=Hotel(hotel_ID)
+# hotel=Hotel(hotel_ID)
+hotel=SpaHotel(hotel_ID) # this is a spahotel obj which is also a hotel obj!!!
 
 if hotel.available():
     # card_number=input('Enter cc number')
@@ -83,6 +113,12 @@ if hotel.available():
             name=input('Enter your name: ')
             reservation_ticket=ReservationTicket(cust_name=name,hotel_object=hotel)
             print(reservation_ticket.generate())
+
+            spa_res=input('Do you want to book a spa package? (yes/no)')
+            if spa_res=='yes':
+                hotel.book_spa_package()
+                spa_tkt=SpaTicket(cust_name=name,hotel_object=hotel)
+                print(spa_tkt.generate())
         else:
             print('CC authentication failed.')
     else:

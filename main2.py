@@ -1,5 +1,6 @@
 import pandas
-# commit: demo: advanced oops and misc Sec43
+from abc import ABC,abstractmethod # Abstract Base Class and decorator!!!
+# commit: demo: abstract classe and method Sec43
 
 df=pandas.read_csv('hotels.csv',dtype={'id':str}) # load all values as str
 
@@ -8,17 +9,18 @@ df=pandas.read_csv('hotels.csv',dtype={'id':str}) # load all values as str
 # instance propeties - is amethod which behaves like a var
 # static methods - static method and class method disctiction is blurred, usually used for stuff like conversion etc.
 
-
 # magic methods - 
-
 # python is always interaction between things like functions an dinstances and meyhods
 # 'hello'=='hi' # syntactic sugar ie, simplified syntax, readable
 # 'hello'.__eq__('hi') # actual stuff happening
-
 # 1 + 2
 #  1 .__add__(2)
-
 # dir(str) see magic methods
+
+# abstract classes and abstract methods - 
+# Abstract Base Class and decorator imported from abc package!!!
+# cannot instantiate abstract class
+#  its role is to define a structure basically
 
 class Hotel:
     watermark='The Real Estate Company' # class variable
@@ -56,7 +58,15 @@ class Hotel:
         return(total)
 
 
-class ReservationTicket:
+# Abstract class
+class Ticket(ABC): # ABC - Abstract Base Class imported from abc package!!!
+
+    @abstractmethod # imported from abc package!!!
+    def generate(self): # all inheriting classes should implement this method
+        pass
+
+
+class ReservationTicket(Ticket): # would inherit from teh ticket class
     def __init__(self,cust_name,hotel_object) -> None:
         self.cust_name=cust_name
         self.hotel=hotel_object
@@ -65,7 +75,7 @@ class ReservationTicket:
         content=f"""
         Thank you for your reservation!
         Here are your booking data:
-        Name: {self.the_customer_name} 
+        Name: {self.the_customer_name}
         Hotel: {self.hotel.name}
         """
         return(content)
@@ -82,12 +92,38 @@ class ReservationTicket:
     # static method and class method disctiction is blurred, usually used for stuff like conversion etc.
 
 
+class DigitalTicket(Ticket): # would inherit from the abstract class
+    # overriding parent class methods
+    # this s not the best way, better way will be to use abstract class
+    # both the parent and child class would be inheriting from teh abstract class???
+    def generate(self):
+        return('Hello thi sis yoyr digital ticket')
+    
+    def download(self):
+        pass
+
+class DigitalTicket1(ReservationTicket):
+    # overriding parent class methods
+    # this s not the best way, better way will be to use abstract class
+    # both the parent and child class would be inheriting from teh abstract class???
+    def generate(self):
+        return('Hello thi sis yoyr digital ticket')
+    
+    def download(self):
+        pass
+
+
+def demo3():
+    # abstract class
+    # cannot instantiate abstract class
+    ticket=Ticket() #TypeError: Can't instantiate abstract class Ticket with abstract method generate
+
 def demo1():
     hotel1=Hotel(hotel_id='188')
     hotel2=Hotel(hotel_id='134')
 
     # instance var
-    print(hotel1.name) 
+    print(hotel1.name)
     print(hotel2.name)
 
     # class var

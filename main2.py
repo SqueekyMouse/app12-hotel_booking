@@ -93,9 +93,7 @@ class ReservationTicket(Ticket): # would inherit from teh ticket class
 
 
 class DigitalTicket(Ticket): # would inherit from the abstract class
-    # overriding parent class methods
-    # this s not the best way, better way will be to use abstract class
-    # both the parent and child class would be inheriting from teh abstract class???
+    # since its inheriting from teh abstract class it need to implement the abstract class
     def generate(self):
         return('Hello thi sis yoyr digital ticket')
     
